@@ -13,6 +13,9 @@ $(document).ready(function () {
             return (hour + "AM")
         }
     }
+    function renderDate(){
+        $("#currentDay").text (moment().format('MMMM Do YYYY, h:mm:ss a'));
+    }
 
     function renderPlanner(){
         for(i=0; i<9; i++){
@@ -27,9 +30,7 @@ $(document).ready(function () {
     }
 
     // FUNCTION CALLS
-
-    $("#currentDay").text (moment().format('MMMM Do YYYY, h:mm:ss a'));
-
+    setInterval(renderDate, 1000);
     renderPlanner()
     // EVENT LISTENERS
 
