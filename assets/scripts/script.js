@@ -2,6 +2,7 @@ $(document).ready(function () {
     // DOM VARIABLES
     // JS VARIABLES
     myStorage = window.localStorage;
+    use24hr  = false;
     // FUNCTION DEFINITIONS
     function twelveHr(hour){
         if (hour > 12){
@@ -19,10 +20,15 @@ $(document).ready(function () {
         var currentClass = "";
         var isDisabled = "";
         for(i=0; i<9; i++){
-            var time = twelveHr(9 + i)
+            var time = "";
+            if (use24hr){
+                time = (9 + i)
+            } else {
+                time = twelveHr(9 + i)
+            }
             if (currentTime > (9 + i)){
                 currentClass = "past";
-                isDisabled = "disabled";
+                isDisabled = "";
             } else if (currentTime == (9 + i)) {
                 currentClass = "present";
                 isDisabled = "";
@@ -30,12 +36,12 @@ $(document).ready(function () {
                 currentClass = "future";
                 isDisabled = "";
             }
-            if(myStorage.getItem(time) == null){
-                myStorage.setItem(time, " ");
+            if(myStorage.getItem(twelveHr(9 + i)) == null){
+                myStorage.setItem(twelveHr(9 + i), " ");
             }
             var content = '<form class="row">'
             content += '<div class="col-md-1 hour">' + (time) + '</div>';
-            content += '<div class="col-md-10 description p-0"><textarea '+ isDisabled +' class="'+ currentClass +'" id="'+ (time) +'">'+ myStorage.getItem(time) +'</textarea></div>';
+            content += '<div class="col-md-10 description p-0"><textarea '+ isDisabled +' class="'+ currentClass +'" id="'+ (twelveHr(9 + i)) +'">'+ myStorage.getItem(twelveHr(9 + i)) +'</textarea></div>';
             content += '<button class="col-md-1 saveBtn"><i class="far fa-save fa-lg"></i></button>';
             content += "</form>"
             $('.container').append(content);
@@ -82,14 +88,22 @@ $(document).ready(function () {
         $( ".hour" ).css( "color", "#ffffff" )
         $( ".hour" ).css( "background-color", " #072540" )
     });
+
     $( "#amPm" ).click(function() {
         console.log("Turn on AM / PM mode");
         $( "#24hrs" ).removeClass( "active" )
         $( "#amPm" ).addClass( "active" )
+        use24hr  = false;
+        $( ".container" ).empty();
+        renderPlanner()
     });
+
     $( "#24hrs" ).click(function() {
         console.log("Turn on 24 hours mode");
         $( "#amPm" ).removeClass( "active" )
         $( "#24hrs" ).addClass( "active" )
+        use24hr  = true;
+        $( ".container" ).empty();
+        renderPlanner()
     });
 });
