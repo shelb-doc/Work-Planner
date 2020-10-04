@@ -53,4 +53,43 @@ $(document).ready(function () {
             myStorage.setItem(time, $("#"+time).val());
         }
     });
+
+    $( "#light" ).click(function() {
+        console.log("Turn on Light mode");
+        $( "#dark" ).removeClass( "active" )
+        $( "#light" ).addClass( "active" )
+        $( "#light,#dark,#24hrs,#amPm" ).addClass( "btn-light" )
+        $( "#light,#dark,#24hrs,#amPm" ).removeClass( "btn-dark" )
+        $( "body" ).css( "background", "white" )
+        $( ".jumbotron" ).css( "color", "black" )
+        $( ".jumbotron" ).css( "border-bottom", "10px solid black" )
+        $( ".row" ).css( "border-top", "1px solid white" )
+        $( ".hour" ).css( "border-top", "1px dashed #000000" )
+        $( ".hour" ).css( "color", "#000000" )
+        $( ".hour" ).css( "background-color", " #ffffff" )
+    });
+    $( "#dark" ).click(function() {
+        console.log("Turn on Dark mode");
+        $( "#light" ).removeClass( "active" )
+        $( "#dark" ).addClass( "active" )
+        $( "#light,#dark,#24hrs,#amPm" ).removeClass( "btn-light" )
+        $( "#light,#dark,#24hrs,#amPm" ).addClass( "btn-dark" )
+        $( ".jumbotron" ).css( "color", "white" )
+        $( ".jumbotron" ).css( "border-bottom", "10px solid white" )
+        $( ".row" ).css( "border-top", "1px solid #072540" )
+        $( "body" ).css( "background", "#072540" )
+        $( ".hour" ).css( "border-top", "1px dashed white" )
+        $( ".hour" ).css( "color", "#ffffff" )
+        $( ".hour" ).css( "background-color", " #072540" )
+    });
+    $( "#amPm" ).click(function() {
+        console.log("Turn on AM / PM mode");
+        $( "#24hrs" ).removeClass( "active" )
+        $( "#amPm" ).addClass( "active" )
+    });
+    $( "#24hrs" ).click(function() {
+        console.log("Turn on 24 hours mode");
+        $( "#amPm" ).removeClass( "active" )
+        $( "#24hrs" ).addClass( "active" )
+    });
 });
