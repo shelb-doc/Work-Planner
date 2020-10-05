@@ -56,6 +56,11 @@ $(document).ready(function () {
             content += "</form>"
             $('.container').append(content);
         }
+        if (myStorage.getItem("theme")=="light"){
+            renderLightMode();
+        } else {
+            renderDarkMode();
+        }
     }
     // disables the dark theme btn and enables the Light theme
     function renderLightMode(){
