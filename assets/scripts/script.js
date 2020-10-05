@@ -22,7 +22,11 @@ $(document).ready(function () {
     }
     // sets currentDay's text to the current day and time
     function renderDate(){
-        $("#currentDay").text (moment().format('MMMM Do YYYY, h:mm:ss a'));
+        if (myStorage.getItem("use24hr")=="true"){
+            $("#currentDay").text (moment().format('MMMM Do YYYY, H:mm:ss'));
+        } else {
+            $("#currentDay").text (moment().format('MMMM Do YYYY, h:mm:ss a'));
+        }
     }
     // iterates from 0 to 8 and generates 9 forms that contain time, textarea, and saveBtn then adds them to the container
     function renderPlanner(){
@@ -57,6 +61,7 @@ $(document).ready(function () {
             $('.container').append(content);
         }
         if (myStorage.getItem("theme")=="light"){
+
             renderLightMode();
         } else {
             renderDarkMode();
