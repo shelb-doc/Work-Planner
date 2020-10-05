@@ -2,7 +2,12 @@ $(document).ready(function () {
     // DOM VARIABLES
     // JS VARIABLES
     myStorage = window.localStorage;
-    use24hr  = false;
+    if(myStorage.getItem("use24hr") == null){
+        myStorage.setItem("use24hr", false);
+    } 
+    if(myStorage.getItem("theme") == null){
+        myStorage.setItem("theme", "light");
+    } 
     // FUNCTION DEFINITIONS
     function twelveHr(hour){
         if (hour > 12){
@@ -21,7 +26,7 @@ $(document).ready(function () {
         var isDisabled = "";
         for(i=0; i<9; i++){
             var time = "";
-            if (use24hr){
+            if (myStorage.getItem("use24hr")=="true"){
                 time = (9 + i)
             } else {
                 time = twelveHr(9 + i)
@@ -47,20 +52,7 @@ $(document).ready(function () {
             $('.container').append(content);
         }
     }
-
-    // FUNCTION CALLS
-    setInterval(renderDate, 1000);
-    renderPlanner()
-
-    // EVENT LISTENERS
-    $( ".saveBtn" ).click(function() {
-        for(i=0; i<9; i++){
-            var time = twelveHr(9 + i)
-            myStorage.setItem(time, $("#"+time).val());
-        }
-    });
-
-    $( "#light" ).click(function() {
+    function renderLightMode(){
         console.log("Turn on Light mode");
         $( "#dark" ).removeClass( "active" )
         $( "#light" ).addClass( "active" )
@@ -73,8 +65,9 @@ $(document).ready(function () {
         $( ".hour" ).css( "border-top", "1px dashed #000000" )
         $( ".hour" ).css( "color", "#000000" )
         $( ".hour" ).css( "background-color", " #ffffff" )
-    });
-    $( "#dark" ).click(function() {
+        myStorage.setItem("theme", "light");
+    }
+    function renderDarkMode(){
         console.log("Turn on Dark mode");
         $( "#light" ).removeClass( "active" )
         $( "#dark" ).addClass( "active" )
@@ -87,23 +80,55 @@ $(document).ready(function () {
         $( ".hour" ).css( "border-top", "1px dashed white" )
         $( ".hour" ).css( "color", "#ffffff" )
         $( ".hour" ).css( "background-color", " #072540" )
-    });
-
-    $( "#amPm" ).click(function() {
+        myStorage.setItem("theme", "dark");
+    }
+    function renderAmPm(){
         console.log("Turn on AM / PM mode");
         $( "#24hrs" ).removeClass( "active" )
         $( "#amPm" ).addClass( "active" )
-        use24hr  = false;
+        myStorage.setItem("use24hr", false);
         $( ".container" ).empty();
         renderPlanner()
-    });
-
-    $( "#24hrs" ).click(function() {
+    }
+    function render24hrs(){
         console.log("Turn on 24 hours mode");
         $( "#amPm" ).removeClass( "active" )
         $( "#24hrs" ).addClass( "active" )
-        use24hr  = true;
+        myStorage.setItem("use24hr", true);
         $( ".container" ).empty();
         renderPlanner()
+    }
+    // FUNCTION CALLS
+    setInterval(renderDate, 1000);
+    renderPlanner()
+    if (myStorage.getItem("use24hr")=="true"){
+        render24hrs();
+    } else {
+        renderAmPm();
+    }
+    if (myStorage.getItem("theme")=="light"){
+        renderLightMode();
+    } else {
+        renderDarkMode();
+    }
+
+    // EVENT LISTENERS
+    $( ".saveBtn" ).click(function() {
+        for(i=0; i<9; i++){
+            var time = twelveHr(9 + i)
+            myStorage.setItem(time, $("#"+time).val());
+        }
+    });
+    $( "#light" ).click(function() {
+        renderLightMode()
+    });
+    $( "#dark" ).click(function() {
+        renderDarkMode()
+    });
+    $( "#amPm" ).click(function() {
+        renderAmPm()
+    });
+    $( "#24hrs" ).click(function() {
+        render24hrs()
     });
 });
