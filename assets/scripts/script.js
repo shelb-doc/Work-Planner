@@ -1,14 +1,17 @@
 $(document).ready(function () {
-    // DOM VARIABLES
     // JS VARIABLES
+    // initialize local storage
     myStorage = window.localStorage;
+    // check if use24hr is null if so set to false
     if(myStorage.getItem("use24hr") == null){
         myStorage.setItem("use24hr", false);
     } 
+    // check if theme is null if so set to light
     if(myStorage.getItem("theme") == null){
         myStorage.setItem("theme", "light");
     } 
     // FUNCTION DEFINITIONS
+    // converts military time to AM/PM time
     function twelveHr(hour){
         if (hour > 12){
             return ((hour - 12) + "PM")
@@ -17,9 +20,11 @@ $(document).ready(function () {
             return (hour + "AM")
         }
     }
+    // sets currentDay's text to the current day and time
     function renderDate(){
         $("#currentDay").text (moment().format('MMMM Do YYYY, h:mm:ss a'));
     }
+    // iterates from 0 to 8 and generates 9 forms that contain time, textarea, and saveBtn then adds them to the container
     function renderPlanner(){
         var currentTime = moment().format('H');
         var currentClass = "";
@@ -52,8 +57,8 @@ $(document).ready(function () {
             $('.container').append(content);
         }
     }
+    // disables the dark theme btn and enables the Light theme
     function renderLightMode(){
-        console.log("Turn on Light mode");
         $( "#dark" ).removeClass( "active" )
         $( "#light" ).addClass( "active" )
         $( "#light,#dark,#24hrs,#amPm" ).addClass( "btn-light" )
@@ -67,8 +72,8 @@ $(document).ready(function () {
         $( ".hour" ).css( "background-color", " #ffffff" )
         myStorage.setItem("theme", "light");
     }
+    // disables the light theme btn and enables the dark theme
     function renderDarkMode(){
-        console.log("Turn on Dark mode");
         $( "#light" ).removeClass( "active" )
         $( "#dark" ).addClass( "active" )
         $( "#light,#dark,#24hrs,#amPm" ).removeClass( "btn-light" )
@@ -82,16 +87,16 @@ $(document).ready(function () {
         $( ".hour" ).css( "background-color", " #072540" )
         myStorage.setItem("theme", "dark");
     }
+    // updates the Planner to use AM/PM time
     function renderAmPm(){
-        console.log("Turn on AM / PM mode");
         $( "#24hrs" ).removeClass( "active" )
         $( "#amPm" ).addClass( "active" )
         myStorage.setItem("use24hr", false);
         $( ".container" ).empty();
         renderPlanner()
     }
+    // updates the Planner to use Military time
     function render24hrs(){
-        console.log("Turn on 24 hours mode");
         $( "#amPm" ).removeClass( "active" )
         $( "#24hrs" ).addClass( "active" )
         myStorage.setItem("use24hr", true);
@@ -99,8 +104,11 @@ $(document).ready(function () {
         renderPlanner()
     }
     // FUNCTION CALLS
+    // starts the date display and updates every second
     setInterval(renderDate, 1000);
+    // creates the planner
     renderPlanner()
+    // checks the settings in local storage and updates the page
     if (myStorage.getItem("use24hr")=="true"){
         render24hrs();
     } else {
@@ -113,21 +121,26 @@ $(document).ready(function () {
     }
 
     // EVENT LISTENERS
+    // detects when a save btn is clicked and saves all textarea values to local storage
     $( ".saveBtn" ).click(function() {
         for(i=0; i<9; i++){
             var time = twelveHr(9 + i)
             myStorage.setItem(time, $("#"+time).val());
         }
     });
+    // detects if light mode is clicked and updates the page
     $( "#light" ).click(function() {
         renderLightMode()
     });
+    // detects if dark mode is clicked and updates the page
     $( "#dark" ).click(function() {
         renderDarkMode()
     });
+    // detects if AM/PM  is clicked and updates the page
     $( "#amPm" ).click(function() {
         renderAmPm()
     });
+    // detects if Military time is clicked and updates the page
     $( "#24hrs" ).click(function() {
         render24hrs()
     });
