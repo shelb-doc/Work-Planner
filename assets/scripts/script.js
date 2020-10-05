@@ -61,7 +61,6 @@ $(document).ready(function () {
             $('.container').append(content);
         }
         if (myStorage.getItem("theme")=="light"){
-
             renderLightMode();
         } else {
             renderDarkMode();
