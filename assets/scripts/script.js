@@ -42,7 +42,7 @@ $(document).ready(function () {
             }
             if (currentTime > (9 + i)){
                 currentClass = "past";
-                isDisabled = "";
+                isDisabled = "disabled";
             } else if (currentTime == (9 + i)) {
                 currentClass = "present";
                 isDisabled = "";
